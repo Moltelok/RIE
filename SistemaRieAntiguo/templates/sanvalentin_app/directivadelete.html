@@ -1,0 +1,14 @@
+<div class="bs-component">
+    <form action="{% url 'directiva-delete' directiva.id %}" method="POST">
+        {% csrf_token %}
+        <div class="modal-header">
+            <h2 class="modal-title">Eliminar Directiva</h2>
+        </div>
+        <div class="modal-body">
+            <p>¿Esta seguro que desea eliminar al directivo: {{ directiva.funcionario|title }}?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-"></span>Eliminar</button>
+        </div>
+    </form>
+</div>

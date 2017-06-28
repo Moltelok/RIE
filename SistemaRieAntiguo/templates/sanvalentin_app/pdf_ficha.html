@@ -1,0 +1,378 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+	body{
+	    font-size: 10px;
+	}
+        p{
+            font-size: x-large;
+
+        }
+        th, td, {
+            font-size:large;
+        }
+        h2{
+            font-size:x-large;
+            text-decoration:underline;
+        }
+        h4{
+            font-size: large;
+            text-decoration:underline;
+        }
+        h1{
+            text-decoration: overline;
+            font-size: x-large;
+        }
+
+        .table-bordered {
+            border: 1px solid #dddddd;
+            border-collapse: separate;
+            *border-collapse: collapse;
+            border-left: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border-left: 1px solid #dddddd;
+            margin: 3px;
+            padding-top:4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th,
+        .table-bordered caption + tbody tr:first-child th,
+        .table-bordered caption + tbody tr:first-child td,
+        .table-bordered colgroup + thead tr:first-child th,
+        .table-bordered colgroup + tbody tr:first-child th,
+        .table-bordered colgroup + tbody tr:first-child td,
+        .table-bordered thead:first-child tr:first-child th,
+        .table-bordered tbody:first-child tr:first-child th,
+        .table-bordered tbody:first-child tr:first-child td {
+            border-top: 0;
+        }
+
+        .table-bordered thead:first-child tr:first-child th:first-child,
+        .table-bordered tbody:first-child tr:first-child td:first-child {
+            -webkit-border-top-left-radius: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topleft: 4px;
+        }
+
+        .table-bordered thead:first-child tr:first-child th:last-child,
+        .table-bordered tbody:first-child tr:first-child td:last-child {
+            -webkit-border-top-right-radius: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-topright: 4px;
+        }
+
+        .table-bordered thead:last-child tr:last-child th:first-child,
+        .table-bordered tbody:last-child tr:last-child td:first-child,
+        .table-bordered tfoot:last-child tr:last-child td:first-child {
+            -webkit-border-radius: 0 0 0 4px;
+            -moz-border-radius: 0 0 0 4px;
+            border-radius: 0 0 0 4px;
+            -webkit-border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            -moz-border-radius-bottomleft: 4px;
+        }
+
+        .table-bordered thead:last-child tr:last-child th:last-child,
+        .table-bordered tbody:last-child tr:last-child td:last-child,
+        .table-bordered tfoot:last-child tr:last-child td:last-child {
+            -webkit-border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            -moz-border-radius-bottomright: 4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th:first-child,
+        .table-bordered caption + tbody tr:first-child td:first-child,
+        .table-bordered colgroup + thead tr:first-child th:first-child,
+        .table-bordered colgroup + tbody tr:first-child td:first-child {
+            -webkit-border-top-left-radius: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topleft: 4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th:last-child,
+        .table-bordered caption + tbody tr:first-child td:last-child,
+        .table-bordered colgroup + thead tr:first-child th:last-child,
+        .table-bordered colgroup + tbody tr:first-child td:last-child {
+            -webkit-border-top-right-radius: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-topright: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="titulo">
+    <table>
+        <tr>
+            {% comment %}<td><img src="../../sanvalentin_app/static/img/logo.jpg" alt=""/></td>{% endcomment %}
+            <td>
+                <div>
+                    <table width="150">
+                        <tr>
+                            <td>COLEGIO SAN VALENTÍN</td>
+                        </tr>
+                        <tr>
+                            <td>Estudio, Disciplina y Trabajo</td>
+                        </tr>
+                        <tr>
+                            <td>Chillán Viejo</td>
+                        </tr>
+                        <tr>
+                            <td>3731-1</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <table>
+                        <tr>
+                            <td>N° DE MATRÍCULA</td>
+                            <td>{{ alumno.matricula }}</td>
+                        </tr>
+                        <tr>
+                            <td>CURSO</td>
+                            {% for c in alumno.alumnocurso_set.all %}
+                                {% if forloop.counter0 == 0 %}
+                                    <td>{{ c.curso.nombre }} - {{ c.curso.anio }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<br/>
+
+<h1 align="center">FICHA DE MATRÍCULA </h1>
+<div>
+    <table width="1000">
+	<tbody>
+        <tr>
+            <th align="left">Nombre :</th>
+            <td colspan="4">{{ alumno }}</td>
+
+        </tr>
+        <tr>
+            <th align="left">Rut :</th>
+            <td>{{ alumno.rut }}</td>
+	</tr>
+	<tr>
+            <th align="left">F.Nacimiento :</th>
+            <td>{{ alumno.fecha_nacimiento }}</td>
+        </tr>
+        <tr>
+            <th align="left">Domicilio :</th>
+            <td>{{ alumno.domicilio }}</td>
+        </tr>
+        <tr>
+            <th align="left">Procedencia :</th>
+            <td>{{ alumno.procedencia }}</td>
+        </tr>
+	</tbody>
+    </table>
+</div>
+<br>
+<h4 align="center">ANTECEDENTES FAMILIARES </h4>
+<div>
+    <table>
+        <tr>
+            <th align="left">Nombre del Padre :</th>
+            <td>{{ alumno.antecedentesalumno.nombrep }}</td>
+        </tr>
+        <tr>
+            <th align="left">Escolaridad :</th>
+            <td>{{ alumno.antecedentesalumno.gradop }}</td>
+            <th align="left">Ocupación :</th>
+            <td>{{ alumno.antecedentesalumno.ocupacionp }}</td>
+        </tr>
+        <tr>
+            <th align="left">Nombre de la Madre :</th>
+            <td>{{ alumno.antecedentesalumno.nombrem }}</td>
+        </tr>
+        <tr>
+            <th align="left">Escolaridad :</th>
+            <td>{{ alumno.antecedentesalumno.gradom }}</td>
+            <th align="left">Ocupación :</th>
+            <td>{{ alumno.antecedentesalumno.ocupacionm }}</td>
+        </tr>
+        <tr>
+            <th align="left">Apoderado :</th>
+            <td>{{ alumno.apoderado.nombre }}</td>
+        </tr>
+        <tr>
+            <th align="left">R.U.T Apoderado :</th>
+            <td>{{ alumno.apoderado.rut_a }}</td>
+        </tr>
+        <tr>
+            <th align="left">Telefono :</th>
+            <td>{{ alumno.apoderado.telefono }}</td>
+            <th align="left">Celular :</th>
+            <td>{{ alumno.apoderado.celular }}</td>
+        </tr>
+    </table>
+    <p>En caso de no poder comunicarse con el Apoderado autorizo a hacerlo con <strong>Sr(a). {{ alumno.apoderado.otroapoderado }}</strong> Teléfono <strong>{{ alumno.apoderado.telefonootroapoderado }}</strong></p>
+</div>
+<br>
+<h4 align="center">ANTECEDENTES SOCIOECONÓMICOS </h4>
+<div>
+    <table>
+        <tr>
+            <th align="left">Vive con :</th>
+            <td>{{ alumno.antecedentesalumno.vive }}</td>
+            <th align="left">N° Hermanos :</th>
+            {% if alumno.antecedentesalumno.hermanos %}
+                <td>{{ alumno.antecedentesalumno.hermanos }}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+            <th align="left">Lugar :</th>
+            <td>{{ alumno.antecedentesalumno.lugar }}</td>
+        </tr>
+        <tr>
+            <th align="left">N° de Personas :</th>
+            {% if alumno.antecedentesalumno.personas %}
+                <td>{{ alumno.antecedentesalumno.personas }}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+            <th align="left">Vivienda :</th>
+            <td>{{ alumno.antecedentesalumno.get_Vivienda_display }}</td>
+            <th align="left">N° de habitaciones :</th>
+            <td>{{ alumno.antecedentesalumno.habitaciones}}</td>
+        </tr>
+        <tr>
+            <th align="left">Renta Mensual :</th>
+            <td>{{ alumno.antecedentesalumno.renta }}</td>
+            <th align="left">Recibe beneficio de Chile Solidario :</th>
+	     {% if alumno.antecedentesalumno.beneficiochs %}	
+            	<td style="vertical-align: bottom">Sí</td>
+	     {% else %}
+		<td style="top: 100px">No</td>
+	     {% endif %} 		
+        </tr>
+        <tr>
+            <th align="left">Previsión de Salud :</th>
+	    {% if alumno.antecedentesalumno.fonasa %}
+            	<td>Fonasa - {{ alumno.antecedentesalumno.fonasa }}</td>
+	    {% else %}
+		{% if alumno.antecedentesalumno.isapre %}
+		    <td>{{ alumno.antecedentesalumno.isapre }}</td>
+		{% else %}
+		    <td>{{ alumno.antecedentesalumno.previcion }}</td>
+		{% endif %}
+	    {% endif %}
+        </tr>
+        <tr>
+            <th align="left">Clases de Religión :</th>
+            <td colspan="5">{{ alumno.antecedentesalumno.religion }}</td>
+        </tr>
+        <tr>
+            <th align="left">Postula al P.A.E :</th>
+	    {% if alumno.antecedentesalumno.pae %}	
+            	<td>Sí</td>
+	     {% else %}
+		<td>No</td>
+	     {% endif %}	  
+        </tr>
+    </table>
+</div>
+<br>
+<p>El uso de uniforme es obligatorio.</p>
+<p>Conozco y acepto las Normas Establecidas en el Reglamento de Evaluacion y Convivencia Escolar.</p>
+<br>
+<br>
+<br>
+<br>
+<h1 align="center">Firma Apoderado</h1>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div>
+    <h1 align="center">DECLARACIÓN DE SALUD DEL ESTUDIANTE</h1>
+    <table>
+        <tbody>
+            <tr>
+                <th align="left">Nombre :</th>
+                <td colspan="3">{{ alumno }}</td>
+                <th align="left">Curso :</th>
+                {% for c in alumno.alumnocurso_set.all %}
+                    {% if forloop.counter0 == 0 %}
+                        <td>{{ c.curso.nombre }} - {{ c.curso.anio }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            <tr></tr>
+            <tr>
+                <th colspan="9" align="left">
+                    <p>Declaro estar informado que ante un problema de salud, es responsabilidad del Apoderado comunicarlo al Establecimiento, mediante un Certificado Médico.</p>
+                </th>
+            </tr>
+            <tr></tr>
+            <tr>
+                <th align="left" colspan="3">Certificado Médico :</th>
+                {% if alumno.antecedentesalumno.certificadoMedico%}
+                    <td>Si</td>
+                {% else %}
+                    <td> No posee </td>
+                {% endif %}
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr>
+                <th align="left" colspan="8">
+                    <p>Su pupilo, ¿Presenta alguna dificultad referida a su salud que deba mencionar?</p>
+                </th>
+            </tr>
+            <tr>
+                {% if alumno.antecedentesalumno.dificultades %}
+                    <td>Si</td>
+                    <td>{{ alumno.antecedentesalumno.dificultad }}</td>
+                {% else  %}
+                    <td>No</td>
+                {% endif %}
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr>
+                <th align="left" colspan="8">
+                    <p>¿Es alérgico a algún medicamento o alimento?</p>
+                </th>
+            </tr>
+            <tr>
+                {% if alumno.antecedentesalumno.alergias %}
+                    <td>Si</td>
+                    <td>{{ alumno.antecedentesalumno.alergia }}</td>
+                {% else  %}
+                    <td>No</td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h1 align="center">Firma Apoderado</h1>
+</div>
+</body>
+</html>

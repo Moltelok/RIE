@@ -1,0 +1,32 @@
+<html>
+<head>
+
+
+</head>
+<body>
+   <div id="content">
+        <div class="main">
+            <h1>Hola Mundo!</h1>
+                {{ user }}
+        </div>
+        <div>
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Materia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for x in profesores %}
+                    <tr>
+                        <td>{{ x.nombre }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

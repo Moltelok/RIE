@@ -1,0 +1,281 @@
+{% extends 'sanvalentin_app/base.html' %}
+
+{% block script %}
+{% load js %}
+{% django_js %}
+    <script>
+        function pulsar(e, n, id) {
+            var obj = document.getElementById('div');
+            var tecla = (document.all) ? e.keyCode :e.which;
+            if(tecla===13){
+                obj.innerHTML = obj.innerHTML+n+"&nbsp;";
+                console.log(
+                    Django.url('mod-nota2', n, id)
+                );
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block content%}
+    <table class="row">
+        <tr>
+            <td><a href="{% url 'listar-materiascurso' materia.curso.id %}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Volver</a></td>
+        </tr>
+    </table>
+    <div id="div"><h3>{% if materia.nombre == "Religion" %}Religión - {{ materia.curso.nombre }}{% else %}{{ materia }}{% endif %}<a href="{% url 'nueva-evaluacion' materia.id %}" data-toggle="modal" data-target="#nuevaEvaluacion">
+    <span class="badge glyphicon-plus">Nueva evaluación</span></a></h3></div>
+    <div class="col-md-11 col-md-offset-0">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a href="#PrimerSemestre" role="tab" data-toggle="tab">Primer Semestre</a></li>
+            <li><a href="#SegundoSemestre" role="tab" data-toggle="tab">Segundo Semestre</a></li>
+            <li><a href="#Anual" role="tab" data-toggle="tab">Anual</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="PrimerSemestre">
+                <div class="panel-body ">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>N° lista</th>
+                            <th>Alumno</th>
+                            {% for evaluacion in evaluaciones %}
+                                {% ifequal evaluacion.semestre 1 %}
+                                    <th><a href="{% url 'evaluacion' evaluacion.id %}" data-toggle="modal" data-target="#descripcion_{{ evaluacion.id }}">
+                                        {{ evaluacion.nombre }}</a></th>
+                                    <div class="modal fade" id="descripcion_{{ evaluacion.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endifequal %}
+                            {% endfor %}
+                            <th>Promedio</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for x in alumnos %}
+                            <tr>
+                                <td align="center">{{ forloop.counter }}</td>
+                                <td>{{ x.alumno.apellidos }} {{ x.alumno.nombres }}</td>
+                                {% for item in x.notas_set.all %}
+                                    {% if item.evaluacion.materia == materia and item.evaluacion.semestre == 1 %}
+                                        <td align="center">
+                                            {% if item.evaluacion.materia.nombre == 'Religion' or item.evaluacion.materia.nombre == 'Religión'%}
+                                                {% if item.valor == 1%}
+                                                    <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}" style="color:tomato">
+                                                        {{ item.get_valor_display }}</a>
+                                                {% else %}
+                                                    <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}">
+                                                        {{ item.get_valor_display }}</a>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if item.nota < 4.0 %}
+                                                    {% if item.nota == 0.0 %}
+                                                        <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}" style="color:tomato">-</a>
+                                                    {% else %}
+                                                        <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}" style="color:tomato">
+                                                            {{ item.nota }}</a>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}">
+                                                        {{ item.nota }}</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <div class="modal fade" id="nota_{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for prom in x.alumnomateriapromedio_set.all %}
+                                    {% if prom.materia == materia and prom.semestre == 1 %}
+                                        {% if prom.materia.nombre == 'Religion' %}
+                                            {% if prom.valor == 1 %}
+                                                <td class="alert-danger" align="center">{{ prom.get_valor_display }}</td>
+                                            {% else %}
+                                                <td class="alert-info" align="center">{{ prom.get_valor_display }}</td>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if prom.promedio < 4.0 %}
+                                                {% if prom.promedio == 0.0 %}
+                                                    <td class="alert-danger" align="center">-</td>
+                                                {% else %}
+                                                    <td class="alert-danger" align="center">{{ prom.promedio }}</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td class="alert-info" align="center">{{ prom.promedio }}</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% empty %}
+                            {% for alumno in materia.curso.alumnocurso_set.all %}
+                                <tr><td><strong>{{ alumno.alumno.nombres }} {{ alumno.alumno.apellidos }}</strong></td><td></td></tr>
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="SegundoSemestre">
+                <div class="panel-body ">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>N° lista</th>
+                            <th>Alumno</th>
+                            {% for evaluacion in evaluaciones %}
+                                {% ifequal evaluacion.semestre 2 %}
+                                    <th><a href="{% url 'evaluacion' evaluacion.id %}" data-toggle="modal" data-target="#descripcion_{{ evaluacion.id }}">
+                                        {{ evaluacion.nombre }}</a></th>
+                                    <div class="modal fade" id="descripcion_{{ evaluacion.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endifequal %}
+                            {% endfor %}
+                            <th>Promedio</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for x in alumnos %}
+                            <tr>
+                                <td align="center">{{ forloop.counter }}</td>
+                                <td>{{ x.alumno.apellidos }} {{ x.alumno.nombres }}</td>
+                                {% for item in x.notas_set.all %}
+                                    {% if item.evaluacion.materia == materia and item.evaluacion.semestre == 2 %}
+                                        <td align="center">
+                                            {% if item.evaluacion.materia.nombre == 'Religion' %}
+                                                {% if item.valor == 1%}
+                                                    <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}" style="color:tomato">
+                                                        {{ item.get_valor_display }}</a>
+                                                {% else %}
+                                                    <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}">
+                                                        {{ item.get_valor_display }}</a>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if item.nota < 4.0 %}
+                                                    {% if item.nota == 0.0 %}
+                                                        <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}" style="color:tomato">-</a>
+                                                    {% else %}
+                                                        <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}" style="color:tomato">
+                                                            {{ item.nota }}</a>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <a href="{% url 'mod-nota' item.id %}" data-toggle="modal" data-target="#nota_{{ item.id }}">
+                                                        {{ item.nota }}</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <div class="modal fade" id="nota_{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for prom in x.alumnomateriapromedio_set.all %}
+                                    {% if prom.materia == materia and prom.semestre == 2 %}
+                                        {% if prom.materia.nombre == 'Religion' %}
+                                            {% if prom.valor == 1 %}
+                                                <td class="alert-danger" align="center">{{ prom.get_valor_display }}</td>
+                                            {% else %}
+                                                <td class="alert-info" align="center">{{ prom.get_valor_display }}</td>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if prom.promedio < 4.0 %}
+                                                {% if prom.promedio == 0.0 %}
+                                                    <td class="alert-danger" align="center">-</td>
+                                                {% else %}
+                                                    <td class="alert-danger" align="center">{{ prom.promedio }}</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td class="alert-info" align="center">{{ prom.promedio }}</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% empty %}
+                            {% for alumno in materia.curso.alumnocurso_set.all %}
+                                <tr><td><strong>{{ alumno.alumno.nombres }} {{ alumno.alumno.apellidos }}</strong></td><td></td></tr>
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="Anual">
+                <div class="panel-body ">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>N° lista</th>
+                            <th>Alumno</th>
+                            <th>Primer Semestre</th>
+                            <th>Segundo Semestre</th>
+                            <th>Final</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for x in alumnos %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ x.alumno }}</td>
+                                {% for p in x.alumnomateriapromedio_set.all %}
+                                    {% ifequal p.materia.id materia.id %}
+                                        {% if p.materia.nombre == 'Religion' %}
+                                            {% if p.valor == 1 %}
+                                                <td class="alert-danger" align="center">{{ p.get_valor_display }}</td>
+                                            {% else %}
+                                                <td class="info" align="center">{{ p.get_valor_display }}</td>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if p.promedio < 4.0 %}
+                                                {% if p.promedio == 0.0 %}
+                                                    <td class="alert-danger" align="center">-</td>
+                                                {% else %}
+                                                    <td class="alert-danger" align="center">{{ p.promedio }}</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td class="info" align="center">{{ p.promedio }}</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endifequal %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="nuevaEvaluacion" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock%}

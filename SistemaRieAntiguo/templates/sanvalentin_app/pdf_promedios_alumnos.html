@@ -1,0 +1,121 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        @page {
+            padding-top: 40px;
+            padding-left: 60px;
+            padding-right: 30px;
+            size: letter landscape;
+        }
+        .titulo{
+            text-align: center;
+            font-size: 15px;
+        }
+		.titulo-header table tr td{
+            font-family: "Lucida Calligraphy", "Zapf Chancery", "Apple Chancery", "Lucida Handwriting", Palatino,serif;
+        }
+        body {
+            margin: 0;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            line-height: 20px;
+            color: #333333;
+            background-image: url('{{STATIC_URL}}img/logo.png');
+        }
+
+        .table-bordered {
+            border: 1px solid #dddddd;
+            border-collapse: separate;
+            *border-collapse: collapse;
+            border-left: 0;
+            -webkit-border-radius: 1px;
+            -moz-border-radius: 1px;
+            border-radius: 1px;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border-left: 1px solid #dddddd;
+            margin: 2px;
+            padding-top: 4px;
+            height: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="titulo">
+        <table>
+            <tr>
+                <td>
+                    <div class="titulo-header">
+                        <table width="150">
+                            <tr>
+                                <td>COLEGIO SAN VALENTÍN</td>
+                            </tr>
+                            <tr>
+                                <td>Estudio, Disciplina y Trabajo</td>
+                            </tr>
+                            <tr>
+                                <td>Chillan Viejo</td>
+                            </tr>
+                            <tr>
+                                <td>3731-1</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <table>
+                            <tr><td>{{ curso.nombre }} {{ curso.anio }}</td></tr>
+                            <tr><td>{{ curso.profesor_jefe }}</td></tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br/>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr><th>Alumnos</th>
+                {% for m in curso.alumnocurso_set.all.0.alumnomateriapromedio_set.all %}
+                    {% if m.semestre == 3 %}
+                        <td align="center"><strong>{{ m.materia.nombre }}</strong></td>
+                    {% endif %}
+                {% endfor %}
+                <td align="center"><strong>Promedio</strong></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for a in curso.alumnocurso_set.all %}
+                <tr>
+                    <td>{{ a.alumno }}</td>
+                    {% for p in a.alumnomateriapromedio_set.all %}
+                        {% if p.semestre == 3 %}
+                            {% if p.promedio < 4.0 %}
+                                <td style="color: tomato" align="center">{{ p.promedio }}</td>
+                            {% else %}
+                                <td align="center">{{ p.promedio }}</td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for p in a.promedioalumno_set.all %}
+                        {% if p.mes == 3 %}
+                            {% if p.promedio < 4.0 %}
+                                <td style="color: tomato" align="center">{{ p.promedio_neto|truncatechars:9 }}</td>
+                            {% else %}
+                                <td align="center">{{ p.promedio_neto|truncatechars:9 }}</td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

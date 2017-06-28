@@ -1,0 +1,122 @@
+{% extends 'sanvalentin_app/base.html' %}
+
+{% block content %}
+    <div class="panel panel-info col-xs-20 col-md-20  col-xs-offset-0">
+        <div class="panel-heading">
+            <table width="1090">
+                <tr>
+                    <td>
+                        <div class="text-right">
+                            <form method="GET">
+                                <div class="input-group custom-search-form">
+                                    <input type="text" class="form-control" {% block name %} name="name" {% endblock%} placeholder="Buscar...">
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                    <td> Alunnos Matriculados <span class="badge">{{alumnos|length}} </span>
+                    </td>
+                    <td>
+                        <div style="text-align: right">
+                            <a href="{% url 'pdf_alumnosmatriculados' %}" class=" btn btn-primary" style="color: #ffffff">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>Guardar PDF</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            </h3>
+        </div>
+        <div class="panel-body list-group" style="height: 465px; overflow-y: scroll;">
+            <table class="table table-condensed table-bordered" style="text-align: center">
+                <thead>
+                <tr>
+                    <th><h5>N° Matricula</h5></th>
+                    <th><h5>Nombres </h5></th>
+                    <th><h5>Apellidos</h5></th>
+                    <th><h5>F. de Nacimiento</h5></th>
+                    <th width="90"><h5>Rut</h5></th>
+                    <th><h5>Curso</h5></th>
+                    <th>
+                        <table class="text-center" style="font-size: 10px">
+                            <thead>
+                            <tr>
+                                <th colspan="2"><h5>Escolaridad Padres</h5></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Padre</td>
+                                <td>Madre</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </th>
+                    <th><h5>Nombre Apoderado</h5></th>
+                    <th><h5>Dirección</h5></th>
+                    <th><h5>Fono Contacto</h5></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for x in alumnos %}
+                    <tr>
+                        <td><h6><a href="{% url 'matricula-update' x.id %}" data-toggle="modal" data-target="#matricula_{{x.id}}">{{ x.matricula }}</a></h6></td>
+                        <td><h6><a href="{% url 'alumno-detalle' x.id %}">{{ x.nombres }}</a></h6></td>
+                        <td><h6>{{ x.apellidos }}</h6></td>
+                        <td><h6>{{ x.fecha_nacimiento|date:"d/m/y" }}</h6></td>
+                        <td><h6>{{ x.rut }}</h6></td>
+                        {% for ac in x.alumnocurso_set.all %}
+                            {% if forloop.counter == x.alumnocurso_set.all|length %}
+                                <td><h6>{{ ac.curso.nombre }} {{ ac.curso.anio }}</h6></td>
+                            {% endif %}
+                        {% empty %}
+                            <td><h6><a href="{% url 'asignar-curso' x.id %}" data-toggle="modal" data-target="#asignar_{{ x.id }}" >Asignar Curso</a></h6></td>
+                        {% endfor %}
+                        <td>
+                            <table style="font-size: 14px; text-align: center" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>{{ x.antecedentesalumno.gradop }}</td>
+                                        <td>{{ x.antecedentesalumno.gradom }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td><h6>{{ x.apoderado.nombre }}</h6></td>
+                        <td><h6>{{ x.domicilio }}</h6></td>
+                        <td><h6>{{ x.apoderado.celular }}</h6></td>
+
+                        <div class="modal fade" id="asignar_{{ x.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="matricula_{{x.id}}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nuevoalumno" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

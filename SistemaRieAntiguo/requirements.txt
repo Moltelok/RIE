@@ -1,0 +1,15 @@
+Django==1.6.7
+Pillow==2.6.0
+South==0.8.4
+Unidecode==0.04.16
+argparse==1.2.1
+django-activelink==0.4
+django-bootstrap3==4.11.0
+django-crispy-forms==1.4.0
+django-email-extras==0.3.1
+django-jsonview==0.4.3
+django-localflavor==1.0
+future==0.9.0
+python-gnupg==0.3.6
+sphinx-me==0.3
+wsgiref==0.1.2

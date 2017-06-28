@@ -1,0 +1,31 @@
+{% extends 'sanvalentin_app/profesor_list.html' %}
+
+{% block object_detail%}
+    <div class="col-md-11">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3>{{ profesor.nombre }}</h3>
+            </div>
+            <div class="panel-body ">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Curso</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for x in profesor.materia_set.all %}
+                        <tr>
+                            <th><a href="{% url 'materias-nota' x.id %}">{{x.nombre}}</a></th>
+                            <th>{{x.curso.nombre}}</th>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% load crispy_forms_tags %}
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="bs-component">
+            <form action="{% url 'dias-update' dt.id %}" method="POST">
+                {%csrf_token%}
+                <fieldset>
+                    <div class="modal-header">
+                        <h2 class="modal-title">Modificar Dias trabajados de {{ dt.get_mes_display }}</h2>
+                    </div>
+                    <div class="modal-body">
+                        {% crispy validar_formulario %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

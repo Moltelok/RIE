@@ -1,0 +1,25 @@
+<!--{%load crispy_forms_tags%}-->
+{% load bootstrap3 %}
+<div class="row">
+    <p>&nbsp;</p>
+	<div class="col-md-8 col-md-offset-1">
+ <!-- Tab panes -->
+		<div class="bs-component">
+			<form class="form-horizontal"  method='post' action='{% url 'asignar-curso' alumno.id  %}' role="form">
+			{%csrf_token%}
+				<fieldset>
+				<legend>Asignar Curso</legend>
+					<div class="col-md-10 col-md-offset-0">
+						<div class="tab-content">
+							<div class="tab-pane active">
+								{% bootstrap_form asignarcurso_formulario %}
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+<!--end Tab panes -->
+	</div>
+</div>

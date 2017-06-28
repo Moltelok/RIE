@@ -1,0 +1,47 @@
+{% extends 'sanvalentin_app/base.html' %}
+
+{% block content%}
+
+    <h1>INFORME DE DESARROLLO PERSONAL Y SOCIAL</h1>
+
+    <div class="panel-body ">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2">Items</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% regroup items by area as itemss %}
+            {% for x in itemss %}
+                <tr>
+                    {% if x.grouper == 0 %}
+                        <th>Area Personal</th>
+                    {% else %}
+                        {% if x.grouper == 1 %}
+                            <th>Area Afectiva y Social</th>
+                        {% endif %}
+                        {% if x.grouper == 2 %}
+                            <th>Desarrollo Pensamiento</th>
+                        {% endif %}
+                    {% endif %}
+
+                    {% for i in x.list %}
+                        <tr>
+                            <td><a href="{% url 'update-ip' i.id %}" data-toggle="modal" data-target="#actualizar_{{ i.id }}">{{ i.descripcion_item }}</a></td>
+                            <div class="modal fade" id="actualizar_{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                   <div class="modal-dialog">
+                                       <div class="modal-content">
+                                           <div class="modal-header">
+                                           </div>
+                                       </div>
+                                   </div>
+                            </div>
+                        </tr>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock%}

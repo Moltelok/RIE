@@ -1,0 +1,153 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        @page {
+            size:letter landscape;
+            margin: 1cm;
+        }
+
+        .table-bordered {
+            border: 1px solid #dddddd;
+            border-collapse: separate;
+            *border-collapse: collapse;
+            border-left: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border-left: 1px solid #dddddd;
+            margin: 3px;
+            padding-top:4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th,
+        .table-bordered caption + tbody tr:first-child th,
+        .table-bordered caption + tbody tr:first-child td,
+        .table-bordered colgroup + thead tr:first-child th,
+        .table-bordered colgroup + tbody tr:first-child th,
+        .table-bordered colgroup + tbody tr:first-child td,
+        .table-bordered thead:first-child tr:first-child th,
+        .table-bordered tbody:first-child tr:first-child th,
+        .table-bordered tbody:first-child tr:first-child td {
+            border-top: 0;
+        }
+
+        .table-bordered thead:first-child tr:first-child th:first-child,
+        .table-bordered tbody:first-child tr:first-child td:first-child {
+            -webkit-border-top-left-radius: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topleft: 4px;
+        }
+
+        .table-bordered thead:first-child tr:first-child th:last-child,
+        .table-bordered tbody:first-child tr:first-child td:last-child {
+            -webkit-border-top-right-radius: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-topright: 4px;
+        }
+
+        .table-bordered thead:last-child tr:last-child th:first-child,
+        .table-bordered tbody:last-child tr:last-child td:first-child,
+        .table-bordered tfoot:last-child tr:last-child td:first-child {
+            -webkit-border-bottom-left-radius: 4px;
+            border-radius: 0 0 0 4px;
+            -moz-border-radius: 0 0 0 4px;
+        }
+
+        .table-bordered thead:last-child tr:last-child th:last-child,
+        .table-bordered tbody:last-child tr:last-child td:last-child,
+        .table-bordered tfoot:last-child tr:last-child td:last-child {
+            -webkit-border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            -moz-border-radius-bottomright: 4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th:first-child,
+        .table-bordered caption + tbody tr:first-child td:first-child,
+        .table-bordered colgroup + thead tr:first-child th:first-child,
+        .table-bordered colgroup + tbody tr:first-child td:first-child {
+            -webkit-border-top-left-radius: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topleft: 4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th:last-child,
+        .table-bordered caption + tbody tr:first-child td:last-child,
+        .table-bordered colgroup + thead tr:first-child th:last-child,
+        .table-bordered colgroup + tbody tr:first-child td:last-child {
+            -webkit-border-top-right-radius: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-topright: 4px;
+        }
+    </style>
+</head>
+<body>
+<h2 class="text-center" >Alumnos Matriculados</h2>
+<div class="panel-body ">
+    <table  class="table-bordered" width="700" height="200" style="text-align: center">
+        <thead>
+        <tr>
+            <th width="50"><h3>N° Matricula</h3></th>
+            <th><h5>Nombres </h5></th>
+            <th><h5>Apellidos</h5></th>
+            <th><h5>F. de Nacimiento</h5></th>
+            <th width="70"><h5>Rut</h5></th>
+            <th width="50"><h5>Curso</h5></th>
+            <th>
+                <table class="text-center" style="font-size: 10px">
+                    <thead>
+                    <tr>
+                        <th colspan="2"><h5>Escolaridad Padres</h5></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Padre</td>
+                        <td>Madre</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </th>
+            <th><h5>Nombre Apoderado</h5></th>
+            <th><h5>Dirección</h5></th>
+            <th width="70"><h5>Fono Contacto</h5></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for x in alumnos %}
+            <tr>
+                <td><h6>{{ x.matricula }}</h6></td>
+                <td><h6>{{ x.nombres }}</h6></td>
+                <td><h6>{{ x.apellidos }}</h6></td>
+                <td><h6><p align="center">{{ x.fecha_nacimiento|date:"d/m/y" }}</p></h6></td>
+                <td><h6>{{ x.rut }}</h6></td>
+                {% for ac in x.alumnocurso_set.all %}
+                    {% if fecha.year == ac.anio %}
+                        <td><h6>{{ ac.curso.nombre }} {{ ac.curso.anio }}</h6></td>
+                    {% endif %}
+                {% endfor %}
+                <td>
+                    <table style="font-size: 14px; text-align: center" >
+                        <tbody>
+                        <tr>
+                            <td>{{ x.antecedentesalumno.gradop }}</td>
+                            <td>{{ x.antecedentesalumno.gradom }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td><h6>{{ x.apoderado.nombre }}</h6></td>
+                <td><h6>{{ x.domicilio }}</h6></td>
+                <td><h6>{{ x.apoderado.celular }}</h6></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

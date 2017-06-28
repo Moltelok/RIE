@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="bs-component">
+            <div class="modal-header">
+                <h2 class="modal-title">{{ evaluacion.nombre }}</h2>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Materia :</th>
+                        <td>{{ evaluacion.materia }}</td>
+                    </tr>
+                    <tr>
+                        <th>Descripcion :</th>
+                        <td>{{ evaluacion.descripcion }}</td>
+
+                    </tr>
+                    <tr>
+                        <th>Fecha :</th>
+                        <td>{{ evaluacion.fecha }}</td>
+                    </tr>
+                    <tr><td><p>&nbsp;</p></td></tr>
+                    <tr>
+                        <table>
+                            <tr align="right">
+                                <th><a class="badge btn-primary" href="{% url 'evaluacion-update' pk=evaluacion.id %}">
+                                    Modificar</a></th>
+                                <th><p>&nbsp;</p></th>
+                                <th><a class="badge btn-danger" href="{% url 'evaluacion-delete' evaluacion.id %}">
+                                    Eliminar</a></th>
+                            </tr>
+                        </table>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,20 @@
+{% extends 'sanvalentin_app/base.html' %}
+
+{% block content %}
+<div class="bs-component">
+    <form action="{% url 'evaluacion-delete' eva.id %}" method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <div class="modal-header">
+                <h2 class="modal-title">Desea eliminar evaluacion {{ eva.nombre }}</h2>
+            </div>
+            <div class="modal-body">
+                <p>¿Esta seguro que desea eliminar la evaluacion: {{ eva.nombre }}?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-"></span>Eliminar</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

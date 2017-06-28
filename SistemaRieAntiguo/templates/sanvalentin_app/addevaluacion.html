@@ -1,0 +1,33 @@
+{%load crispy_forms_tags%}
+
+<script>
+    $(function() {
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+        $( ".datepicker" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1950:2020"
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="bs-component">
+            <form action="{% url 'nueva-evaluacion' materia.id %}" method="POST">
+                {% csrf_token %}
+                <fieldset>
+                    <div class="modal-header">
+                        <h2 class="modal-title">Crear nueva Evaluación</h2>
+                    </div>
+                    <div class="modal-body">
+                        {% crispy formulario_evaluacion %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

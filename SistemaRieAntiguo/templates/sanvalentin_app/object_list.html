@@ -1,0 +1,34 @@
+{% extends 'sanvalentin_app/base.html' %}
+{% load activelink %}
+
+{% block content %}
+<div class="row"> 
+	<!-- lista de objetos -->
+	<div class="col-md-3">
+	<div class="panel panel-primary">
+		<div class="panel-heading">{% block title_list %} {% endblock %}</div>
+		<div class="panel-body">
+			<form method="GET">
+                  <div class="input-group custom-search-form">
+                      <input type="text" class="form-control" {% block name %} name="name" {% endblock%} placeholder="Buscar...">
+                    </div>
+    		</form>
+    		{% if request.path !=  request.get_full_path %}
+  				<a href="{{ request.path }}"><small>Quitar Filtro</small></a>
+  			{% endif %}
+	<div class="list-group" style="height: 400px; overflow-y: scroll;">
+	{% block object_list %}
+	{% endblock %}
+	</div>
+	
+		</div>
+	</div>
+	</div>
+	<!-- detalle de objeto -->
+	<div class="col-md-9">
+		{% block object_detail %}
+		<p class="alert alert-info">Seleccione un item de la lista para obtener más detalles.</p>
+		{% endblock %}
+	</div>
+</div>
+{% endblock %}

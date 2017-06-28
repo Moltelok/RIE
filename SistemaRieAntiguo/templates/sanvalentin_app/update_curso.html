@@ -1,0 +1,19 @@
+{% load bootstrap3 %}
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="bs-component">
+            <form action="{% url 'curso-update' curso.id  %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h2 class="modal-title">Modificar Curso {{ curso.nombre }}</h2>
+                </div>
+                <div class="modal-body">
+                    {% bootstrap_form form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

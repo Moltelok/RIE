@@ -1,0 +1,77 @@
+{% extends 'sanvalentin_app/base.html' %}
+
+{% block content%}
+    {% if items|length > 0 %}
+    <table class="row">
+        <tr>
+            <td><a href="{% url 'listar-cursoalumno' items.0.alumno.curso.id %}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Volver</a></td>
+        </tr>
+    </table>
+    <h1>INFORME DE DESARROLLO PERSONAL Y SOCIAL</h1>
+    <table width="1120">
+        <tr>
+            <td><h3>Alumno {{ items.0.alumno }}</h3></td>
+            <td><div class="text-right">
+                <a href="{% url 'pdf_IDP' items.0.alumno.id %}" class=" btn btn-primary" style="color: #ffffff" target="_blanck">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>Guardar Informe</a></div></td>
+            <td><div class="text-right">
+                <a href="{% url 'pdf_IDP1' items.0.alumno.id %}" class=" btn btn-primary" style="color: #ffffff" target="_blanck">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>1° Semestre</a></div></td>
+            <td><div class="text-right">
+                <a href="{% url 'pdf_IDP2' items.0.alumno.id %}" class=" btn btn-primary" style="color: #ffffff" target="_blanck">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>2° Semestre</a></div></td>
+        </tr>
+    </table>
+    <div class="panel-body ">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2"></th>
+                <th>Primer Semestre</th>
+                <th>Segundo Semestre</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% regroup items by item.area as itemss %}
+            {% for x in itemss %}
+                <tr>
+                {% if x.grouper == 0 %}
+                    <th style="background-color: cornflowerblue" colspan="4">Area Personal</th>
+                {% else %}
+                    {% if x.grouper == 1 %}
+                        <td style="background-color: cornflowerblue" colspan="4"><strong>Area Afectiva y Social</strong></td>
+                    {% else %}
+                        <td style="background-color: cornflowerblue" colspan="4"><strong>Desarrollo Pensamiento</strong></td>
+                    {% endif %}
+                {% endif %}
+                </tr>
+                    {% regroup x.list by item.descripcion_item as cosas %}
+                    {% for cosa in cosas %}
+                        <tr>
+                            <td colspan="2">{{ cosa.grouper }}</td>
+                            {% for c in cosa.list %}
+                                <td><a href="{% url 'informe-update' pk=c.id %}" data-toggle="modal" data-target="#actualizar_{{ c.id }}">{{ c.get_valor_display }}</a></td>
+                                <div class="modal fade" id="actualizar_{{ c.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div>
+            <h2>Informe de Personalidad</h2>
+            <p>La información no puede ser revisada, debe crear los ítems de evaluación antes de la creación del alumno.</p>
+        </div>
+    {% endif %}
+{% endblock%}

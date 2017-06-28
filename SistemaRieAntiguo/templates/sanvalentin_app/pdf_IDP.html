@@ -1,0 +1,166 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        body{
+            font-size: 13px;
+        }
+        .table-bordered {
+            border: 1px solid #dddddd;
+            border-collapse: separate;
+            *border-collapse: collapse;
+            border-left: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border-left: 1px solid #dddddd;
+            margin: 3px;
+            padding-top:4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th,
+        .table-bordered caption + tbody tr:first-child th,
+        .table-bordered caption + tbody tr:first-child td,
+        .table-bordered colgroup + thead tr:first-child th,
+        .table-bordered colgroup + tbody tr:first-child th,
+        .table-bordered colgroup + tbody tr:first-child td,
+        .table-bordered thead:first-child tr:first-child th,
+        .table-bordered tbody:first-child tr:first-child th,
+        .table-bordered tbody:first-child tr:first-child td {
+            border-top: 0;
+        }
+
+        .table-bordered thead:first-child tr:first-child th:first-child,
+        .table-bordered tbody:first-child tr:first-child td:first-child {
+            -webkit-border-top-left-radius: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topleft: 4px;
+        }
+
+        .table-bordered thead:first-child tr:first-child th:last-child,
+        .table-bordered tbody:first-child tr:first-child td:last-child {
+            -webkit-border-top-right-radius: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-topright: 4px;
+        }
+
+        .table-bordered thead:last-child tr:last-child th:first-child,
+        .table-bordered tbody:last-child tr:last-child td:first-child,
+        .table-bordered tfoot:last-child tr:last-child td:first-child {
+            -webkit-border-radius: 0 0 0 4px;
+            -moz-border-radius: 0 0 0 4px;
+            border-radius: 0 0 0 4px;
+            -webkit-border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            -moz-border-radius-bottomleft: 4px;
+        }
+
+        .table-bordered thead:last-child tr:last-child th:last-child,
+        .table-bordered tbody:last-child tr:last-child td:last-child,
+        .table-bordered tfoot:last-child tr:last-child td:last-child {
+            -webkit-border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            -moz-border-radius-bottomright: 4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th:first-child,
+        .table-bordered caption + tbody tr:first-child td:first-child,
+        .table-bordered colgroup + thead tr:first-child th:first-child,
+        .table-bordered colgroup + tbody tr:first-child td:first-child {
+            -webkit-border-top-left-radius: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topleft: 4px;
+        }
+
+        .table-bordered caption + thead tr:first-child th:last-child,
+        .table-bordered caption + tbody tr:first-child td:last-child,
+        .table-bordered colgroup + thead tr:first-child th:last-child,
+        .table-bordered colgroup + tbody tr:first-child td:last-child {
+            -webkit-border-top-right-radius: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-topright: 4px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+            <td rowspan="2" width="190" align="center"><img src="/var/djangoprojects/env_sanvalentin/sanvalentin/sanvalentin_app/static/img/logo.jpg" width="100"/></td>
+            <td><h3>INFORME DE DESARROLLO PERSONAL Y SOCIAL </h3></td>
+        </tr>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>Alumno: {{ items.0.alumno.alumno }}</td>
+                        <td>Profesor Jefe: {{ items.0.alumno.curso.profesor_jefe }}</td>
+                    </tr>
+                    <tr>
+                        <td>Curso: {{ items.0.alumno.curso.nombre }} </td>
+                        <td>Fecha: {{ fecha|date:'d E Y' }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div>
+    <table class="table-bordered" width="2000" height="30">
+        <thead>
+        <tr>
+            <th colspan="2"></th>
+
+            <th><h5>Primer Semestre</h5></th>
+            <th><h5>Segundo Semestre</h5></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% regroup items by item.area as itemss %}
+        {% for x in itemss %}
+            <tr>
+                {% if x.grouper == 0 %}
+                    <td colspan="4" style="background-color: #E9F6FF"><strong>Area Personal</strong></td>
+                {% else %}
+                    {% if x.grouper == 1 %}
+                        <td colspan="4" style="background-color: #E9F6FF"><strong>Area Afectiva y Social</strong></td>
+                    {% else %}
+                        <td colspan="4" style="background-color: #E9F6FF"><strong>Desarrollo Pensamiento</strong></td>
+                    {% endif %}
+                {% endif %}
+            </tr>
+            {% regroup x.list by item.descripcion_item as cosas %}
+            {% for cosa in cosas %}
+                <tr>
+
+                    <td colspan="2"><p>{{ cosa.grouper }}</p></td>
+                    {% for c in cosa.list %}
+                        <td><p align="center">{{ c.get_valor_display }}</p></td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p>&nbsp;</p>
+<div>
+    <table align="center" class="table-bordered" width="1000">
+        <tr>
+            <td height="50"><br></td>
+            <td height="50"><br></td>
+        </tr>
+        <tr>
+            <td align="center"><i>Firma Profesor Jefe</i></td>
+            <td align="center"><i>Firma Directora</i></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

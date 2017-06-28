@@ -1,0 +1,101 @@
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>San Valentín</title>
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/jquery-ui-1.10.4.custom.css">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrapValidator.min.css">
+
+    <script src="{{STATIC_URL}}js/jquery.min.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap.js"></script>
+    <script src="{{STATIC_URL}}js/jquery-ui-1.10.4.custom.js"></script>
+    <script src="{{STATIC_URL}}js/jquery-ui-i18n.min.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrapValidator.min.js"></script>
+    {% block script %}
+    {% endblock %}
+
+
+</head>
+<body>
+<div class="navbar navbar-inverse">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/home/">RIE Colegio San Valentín</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav">
+                {% if user.profesor.directiva %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cursos<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'listar-cursos' %}">Listar Cursos</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'nuevo-curso' %}">Agregar Curso</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profesor <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'listar-profesores' %}">Listar Profesores</a></li>
+                            <li class="divider"></li>
+                            <li ><a href="{% url 'nuevo-profesor' %}">Ingresar Profesor</a></li>
+                        </ul>
+                    </li>
+                    <li></li>
+                    <li><a href="{% url 'alumnos-matriculados' %}">Alumnos Matriculados</a></li>
+                    <li><a href="{% url 'direccion' %}">Dirección</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Informe Personalidad <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'ip' %}">Crear Item</a></li>
+                            <li class="divider"></li>
+                            <li ><a href="{% url 'informe-personalidad' %}">Actualizar Item</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    {% if user.profesor.curso_set.all.0 %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Mis Cursos <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                {% for c in user.profesor.curso_set.all %}
+                                    <li><a href="{% url 'detalle-curso' c.id %}">{{ c.nombre }} - {{ c.anio }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li><a href="{% url 'listar-materias' user.profesor.id %}">Mis Materias</a></li>
+                {% endif %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="">
+                    {% if user.profesor.directiva %}
+                        <span class="glyphicon glyphicon-user"></span> {{ user.profesor.directiva.get_cargo_display }} {{ user.profesor.nombre }}
+                        <span class="caret"></span></a>
+                    {% else %}
+                        <span class="glyphicon glyphicon-user"></span>Prof. {{ user.profesor.nombre }}<span class="caret"></span></a>
+                    {% endif %}
+                <ul class="dropdown-menu" aria-labelledby="themes">
+                    <li><a href="{% url 'profesor-detalle' user.profesor.id %}"><span class="glyphicon glyphicon-camera"></span> Ver perfil</a></li>
+                    <li><a href="{% url 'cuenta-update' user.id %}"><span class="glyphicon glyphicon-edit"></span> Cambiar Contraseña</a></li>
+                </ul>
+            </li>
+            <li><a href="/cerrar/">Cerrar Sesion</a></li>
+        </ul>
+    </div>
+</div>
+<p>&nbsp;</p>
+
+<div class="container col-md-offset-1">
+    {%block content%}
+    {%endblock%}
+</div>
+
+</body>
+</html>

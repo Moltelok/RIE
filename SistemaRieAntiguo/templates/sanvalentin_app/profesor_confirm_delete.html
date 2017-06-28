@@ -1,0 +1,14 @@
+<div class="bs-component">
+    <form action="{% url 'profesor-delete' profesor.id %}" method="POST">
+        {% csrf_token %}
+        <div class="modal-header">
+            <h2 class="modal-title">Eliminar Profesor</h2>
+        </div>
+        <div class="modal-body">
+            <p>¿Esta seguro que desea eliminar al Profesor: {{ profesor.nombre }}?</p>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Eliminar" />
+        </div>
+    </form>
+</div>

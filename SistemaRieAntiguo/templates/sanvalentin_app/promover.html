@@ -1,0 +1,20 @@
+{% load bootstrap3 %}
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="bs-component">
+            <form action="{% url 'promover-alumno' alumno.id %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h2 class="modal-title">Promover Alumno</h2>
+                </div>
+                <div class="modal-body">
+                    {% bootstrap_form promover_formulario %}
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Guardar"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+{%extends 'sanvalentin_app/base.html'%}
+{% load bootstrap3 %}
+{%load crispy_forms_tags%}
+
+{% block script %}
+    <script>
+        $(function() {
+            $.datepicker.setDefaults($.datepicker.regional['es']);
+            $( ".datepicker" ).datepicker({
+                                              changeMonth: true,
+                                              changeYear: true,
+                                              yearRange: "1950:2020"
+                                          });
+        });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-9 col-md-offset-1">
+            <legend>Ingresar Nuevo Alumno</legend>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#alumno" role="tab" data-toggle="tab">Datos Personales</a></li>
+                <li><a href="#apoderado" role="tab" data-toggle="tab">Apoderado</a></li>
+                <li><a href="#familia" role="tab" data-toggle="tab">Antecedentes Familiares</a></li>
+                <li><a href="#socio" role="tab" data-toggle="tab">Antecedentes Socioeconomicos</a></li>
+                <li><a href="#salud" role="tab" data-toggle="tab">Salud</a></li>
+            </ul>
+            <p>&nbsp;</p>
+            <!-- Tab panes -->
+
+            <div class="well bs-component">
+                <form class="form-horizontal"  method='post' enctype='multipart/form-data' action='' role="form">
+                    {%csrf_token%}
+                    <fieldset>
+                        <div class="col-md-6 col-md-offset-1">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="alumno">
+                                    {% crispy formulario_alumno %}
+                                </div>
+                                <div class="tab-pane" id="apoderado">
+                                    {% bootstrap_form formulario_apoderado %}
+                                </div>
+                                <div class="tab-pane" id="familia">
+                                    {% bootstrap_form formulario_antecedentesf %}
+                                </div>
+                                <div class="tab-pane" id="socio">
+                                    {% bootstrap_form formulario_antecedentess %}
+
+                                </div>
+                                <div class="tab-pane" id="salud">
+                                    {% bootstrap_form formulario_salud %}
+                                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <!--end Tab panes -->
+        </div>
+    </div>
+{%endblock%}

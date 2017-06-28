@@ -1,0 +1,261 @@
+{% extends 'sanvalentin_app/base.html' %}
+
+{% block content %}
+    <div class="" id="banner">
+    <div class="row">
+        <div class="col-md-7 col-md-offset-0">
+            <h1>{{alumno.apellidos|title}}
+                <a href="{% url 'alumno-delete' alumno.id %}" data-toggle="modal" data-target="#eliminar">
+                    <span class="btn-danger badge glyphicon glyphicon-trash">Eliminar</span></a></h1>
+            <h2 class="text-muted">{{alumno.nombres|title}}</h2>
+            <h4><p class="text-muted">{{alumno.rut}}</p></h4>
+        </div>
+        <div>
+            <a href="{% url 'pdf_ficha' alumno.id %}" class="btn btn-primary" target="_BLANCK">
+                <span class="glyphicon glyphicon-floppy-disk"></span>Exportar Ficha de Matricula</a>
+        </div>
+    </div>
+
+    <p>&nbsp;</p>
+    <div class="row">
+        <div class="col-md-9">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#detalle" data-toggle="tab">Datos Personales</a></li>
+                <li><a href="#apoderado" data-toggle="tab">Apoderado</a></li>
+                <li><a href="#af" data-toggle="tab">Antecedentes Familiares</a></li>
+                <li><a href="#as" data-toggle="tab">Antecedentes Socioeconomicos</a></li>
+                <li><a href="#salud" data-toggle="tab">Salud</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content col-md-offset-0 ">
+                <div class="tab-pane fade active in" id="detalle">
+                    <p>&nbsp;</p>
+                    <table class="table table-striped table-hover ">
+                        <tbody>
+                        <tr>
+                            <th>N° Matricula :</th>
+                            <td>{{alumno.matricula}}</td>
+                        </tr>
+                        <tr>
+                            <th>RUT :</th>
+                            <td>{{alumno.rut}}</td>
+                        </tr>
+                        <tr>
+                            <th>Nombres :</th>
+                            <td>{{alumno.nombres|title}}</td>
+                        </tr>
+                        <tr>
+                            <th>Apellidos :</th>
+                            <td>{{alumno.apellidos|title}}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha de Nacimiento:</th>
+                            <td>{{alumno.fecha_nacimiento}}</td>
+                        </tr>
+                        <tr>
+                            <th>Domicilio:</th>
+                            <td>{{alumno.domicilio}}</td>
+                        </tr>
+                        <tr>
+                            <th>Procedencia :</th>
+                            <td>{{alumno.procedencia}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="{% url 'alumno-update' alumno.id %}" data-toggle="modal" data-target="#actualizar">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Actualizar</button></a>
+                </div>
+                <div class="tab-pane" id="apoderado">
+                    <p>&nbsp;</p>
+                    <table class="table table-striped table-hover ">
+                        <tbody>
+                        <tr>
+                            <th>Nombre:</th>
+                            <td>{{alumno.apoderado.nombre}}</td>
+                        </tr>
+                        <tr>
+                            <th>Telefono :</th>
+                            <td>{{alumno.apoderado.telefono}}</td>
+                        </tr>
+                        <tr>
+                            <th>Celular :</th>
+                            <td>{{alumno.apoderado.celular}}</td>
+                        </tr>
+                        <tr>
+                            <th>Apoderado Alternativo:</th>
+                            <td>{{alumno.apoderado.otroapoderado}}</td>
+                        </tr>
+                        <tr>
+                            <th>Telefono:</th>
+                            <td>{{alumno.apoderado.telefonootroapoderado}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="{% url 'apoderado-update' alumno.apoderado.id %}" data-toggle="modal" data-target="#actualizarap">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Actualizar</button></a>
+                </div>
+                <div class="tab-pane" id="af">
+                    <p>&nbsp;</p>
+                    <table class="table table-striped table-hover ">
+                        <tbody>
+                        <tr>
+                            <th>Nombre Padre:</th>
+                            <td>{{alumno.antecedentesalumno.nombrep}}</td>
+                        </tr>
+                        <tr>
+                            <th>Escolaridad:</th>
+                            <td>{{alumno.antecedentesalumno.gradop}}</td>
+                        </tr>
+                        <tr>
+                            <th>Ocupación:</th>
+                            <td>{{alumno.antecedentesalumno.ocupacionp}}</td>
+                        </tr>
+                        <tr>
+                            <th>Nombre Madre:</th>
+                            <td>{{alumno.antecedentesalumno.nombrem}}</td>
+                        </tr>
+                        <tr>
+                            <th>Escolaridad:</th>
+                            <td>{{alumno.antecedentesalumno.gradom}}</td>
+                        </tr>
+                        <tr>
+                            <th>Ocupacion:</th>
+                            <td>{{alumno.antecedentesalumno.ocupacionm}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="{% url 'antefam-update' alumno.id %}" data-toggle="modal" data-target="#actualizarante">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Actualizar</button></a>
+                </div>
+                <div class="tab-pane" id="as">
+                    <p>&nbsp;</p>
+                    <table class="table table-striped table-hover ">
+                        <tbody>
+                        <tr>
+                            <th>Vive con :</th>
+                            <td>{{alumno.antecedentesalumno.vive}}</td>
+                        </tr>
+                        <tr>
+                            <th>N° Hermanos</th>
+                            <td>{{alumno.antecedentesalumno.hermanos}}</td>
+                        </tr>
+                        <tr>
+                            <th>Lugar:</th>
+                            <td>{{alumno.antecedentesalumno.lugar}}</td>
+                        </tr>
+                        <tr>
+                            <th>N° Personas:</th>
+                            <td>{{alumno.antecedentesalumno.personas}}</td>
+                        </tr>
+                        <tr>
+                            <th>Vivienda:</th>
+                            <td>{{alumno.antecedentesalumno.get_Vivienda_display}}</td>
+                        </tr>
+                        <tr>
+                            <th>N° Habitaciones:</th>
+                            <td>{{alumno.antecedentesalumno.habitaciones}}</td>
+                        </tr>
+                        <tr>
+                            <th>Renta Mensual:</th>
+                            <td>{{alumno.antecedentesalumno.renta}}</td>
+                        </tr>
+                        <tr>
+                            <th>Previsión:</th>
+                            {% if alumno.antecedentesalumno.fonasa %}
+                                <td>Fonasa-{{alumno.antecedentesalumno.fonasa}}</td>
+                            {% else %}
+                                {% if alumno.antecedentesalumno.isapre  %}
+                                    <td>{{alumno.antecedentesalumno.isapre}}</td>
+                                {% else %}
+                                    {% if alumno.antecedentesalumno.previcion %}
+                                        <td>{{alumno.antecedentesalumno.previcion}}</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+
+
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="{% url 'antesoci-update' alumno.id %}" data-toggle="modal" data-target="#actualizsocio">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Actualizar</button></a>
+                </div>
+                <div class="tab-pane" id="salud">
+                    <p>&nbsp;</p>
+                    <table class="table table-striped table-hover ">
+                        <tbody>
+                        <tr>
+                            <th>Certificado Medico:</th>
+                            {% if alumno.antecedentesalumno.certificadoMedico %}
+                                <td>Si</td>
+                            {% else %}
+                                <td>No</td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <th>Dificultad de Salud:</th>
+                            <td>{{alumno.antecedentesalumno.dificultad}}</td>
+                        </tr>
+                        <tr>
+                            <th>Alergia algún medicamento:</th>
+                            <td>{{alumno.antecedentesalumno.alergia}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="{% url 'salud-update' alumno.id %}" data-toggle="modal" data-target="#saludup">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>Actualizar</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="actualizar" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="actualizarap" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="actualizarante" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="actualizsocio" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="saludup" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

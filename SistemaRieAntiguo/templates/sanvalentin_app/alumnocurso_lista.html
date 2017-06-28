@@ -1,0 +1,61 @@
+{% extends 'sanvalentin_app/curso_lista.html' %}
+
+{% block object_detail %}
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <table width="1300">
+                <tr>
+                    <td>
+                        <h3>{{ curso.nombre }} - {{ curso.anio }}<a href="{% url 'nuevo-alumno' curso.id %}" >
+                        <span class="badge glyphicon-plus">Ingresar Alumno</span></a></h3>
+                    </td>
+                </tr>
+            </table>
+            </h3>
+        </div>
+        <div class="panel-body list-group" style="height: 465px; overflow-y: scroll;">
+            <table class="table table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th>N° lista</th>
+                    <th>Nombre </th>
+                    <th>Notas</th>
+                    <th>Información Personal</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for x in curso.alumnocurso_set.all %}
+                    <tr>
+                        <td align="center">{{ forloop.counter }}</td>
+                        <td>{{x.alumno.apellidos }} {{x.alumno.nombres}}</td>
+                        {% if x.notas_set.all %}
+                            <td><a href="{% url 'notas-alumno' x.id %}"><span class="glyphicon glyphicon-eye-open"></span>Ver</a></td>
+                        {% else %}
+                            <td><span class="glyphicon glyphicon-eye-open"></span>Ver</td>
+                        {% endif %}
+                        <td align="center"><a href="{% url 'alumno-detalle' x.alumno.id %}"><span class="glyphicon glyphicon-eye-open"></span>Ver</a></td>
+                        <td class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Acción<b class="caret"></b></a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="{% url 'informe-alumno' x.id %}"><span class="glyphicon glyphicon-eye-open"></span>Informe Personal</a></li>
+                                <li><a href="{% url 'asistencia-alumno' x.id %}"><span class="glyphicon glyphicon-eye-open"></span>Asistencia</a></li>
+                                <li><a href="{% url 'promover-alumno' x.alumno.id %}" data-toggle="modal" data-target="#promoveralumno"><span class="glyphicon glyphicon-ok"></span>Promover</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="promoveralumno" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

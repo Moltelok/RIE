@@ -1,0 +1,53 @@
+{% extends 'sanvalentin_app/base.html' %}
+
+{% block content %}
+    <table class="row">
+        <tr>
+            <td><a href="{% url 'detalle-curso' curso.id %}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Volver</a></td>
+        </tr>
+    </table>
+    <br/>
+    <div><h3>{{ curso.nombre }} - {{ curso.anio }}
+        <a href="{% url 'promedios-alumnos-pdf' curso.id %}" class="badge btn-primary" target="_blank">
+            <span class="glyphicon glyphicon-floppy-disk"></span></a></h3></div>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr><th>Alumnos</th>
+                {% for m in curso.alumnocurso_set.all.0.alumnomateriapromedio_set.all %}
+                    {% if m.semestre == 3 %}
+                        <td align="center"><strong>{{ m.materia.nombre }}</strong></td>
+                    {% endif %}
+                {% endfor %}
+                <td align="center"><strong>Promedio</strong></td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in curso.alumnocurso_set.all %}
+                    <tr>
+                        <td>{{ a.alumno }}</td>
+                        {% for p in a.alumnomateriapromedio_set.all %}
+                            {% if p.semestre == 3 %}
+                                {% if p.promedio < 4.0 %}
+                                    <td style="color: tomato" align="center">{{ p.promedio }}</td>
+                                {% else %}
+                                    <td align="center">{{ p.promedio }}</td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for p in a.promedioalumno_set.all %}
+                            {% if p.mes == 3 %}
+                                {% if p.promedio < 4.0 %}
+                                    <td style="color: tomato" align="center" class="alert-danger">{{ p.promedio_neto|truncatechars:9 }}</td>
+                                {% else %}
+                                    <td align="center" class="alert-info">{{ p.promedio_neto|truncatechars:9 }}</td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

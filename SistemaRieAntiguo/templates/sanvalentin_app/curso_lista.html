@@ -1,0 +1,29 @@
+{% extends 'sanvalentin_app/object_list.html' %}
+{% load activelink %}
+
+{% block title_list %}
+    {% if user.profesor.directiva %}
+        Cursos <span class="badge"> {{cursos|length}} </span>
+    {% else %}
+        Menu
+    {% endif %}
+{% endblock %}
+
+{% block object_list %}
+    {% for x in cursos %}
+        {% if user.profesor.id == x.profesor_jefe.id or user.profesor.directiva %}
+            <a class="list-group-item" data-toggle="collapse" data-target="#collapse{{x.id}}"> {{x}} </a>
+            <div id="collapse{{x.id}}" class="collapse out">
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="{% url 'detalle-curso' x.id %}">Mostrar Detalle</a></li>
+                    <li><a href="{% url 'listar-cursoalumno' x.id %}">Ver Alumnos</a></li>
+                    <li><a href="{% url 'listar-materiascurso' x.id %}">Ver Materias</a></li>
+                    <li><a href="{% url 'promedios-alumnos' x.id %}">Promedios del Curso</a></li>
+                    <li><a href="{% url 'dias-trabajados' x.id %}">Dias Trabajados</a></li>
+                </ul>
+            </div>
+        {% endif %}
+    {% empty %}
+        <div class="alert alert-warning"> No existen objetos en la lista.</div>
+    {% endfor %}
+{% endblock %}

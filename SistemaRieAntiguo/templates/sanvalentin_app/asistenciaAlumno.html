@@ -1,0 +1,214 @@
+{% extends 'sanvalentin_app/base.html' %}
+
+{% block content%}
+    <table class="row">
+        <tr>
+            <td><a href="{% url 'listar-cursoalumno' asistencia.0.alumno.curso.id %}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Volver</a></td>
+        </tr>
+    </table>
+    <div><h3>{{ asistencia.0.alumno }}</h3>
+    </div>
+    <div class="col-md-11 col-md-offset-0">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a href="#PrimerSemestre" role="tab" data-toggle="tab">Primer Semestre</a></li>
+            <li><a href="#SegundoSemestre" role="tab" data-toggle="tab">Segundo Semestre</a></li>
+            <li><a href="#Anual" role="tab" data-toggle="tab">Anual</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="PrimerSemestre">
+                    <div class="panel-body col-md-10">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Meses</th>
+                                <th>Días Trabajados</th>
+                                <th>Inasistencias</th>
+                                <th>Atrasos</th>
+                                <th>Asistencia</th>
+                                <th>Puntualidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% regroup asistencia by mes as asi %}
+                            {% for x in asi %}
+                                {% for item in x.list %}
+                                    {% if item.mes < 8 %}
+                                        <tr>
+                                            <th>{{ item.get_mes_display }}</th>
+                                            {% for dt in item.alumno.curso.diastrabajados_set.all %}
+                                                {% ifequal dt.mes item.mes %}
+                                                    <td>{{ dt.diastrabajados }}</td>
+                                                    {% if dt.diastrabajados == 0 and dt.mes == item.mes %}
+                                                        <td>{{ item.inasistencias }}</td>
+                                                        <td>{{ item.atrasos }}</td>
+                                                    {% else %}
+                                                        <td><a href="{% url 'inasistencia-update' item.id %}" data-toggle="modal" data-target="#inasistencias_{{ item.id }}">{{ item.inasistencias }}</a></td>
+                                                        <td><a href="{% url 'atraso-update' item.id %}" data-toggle="modal" data-target="#atrasos_{{ item.id }}">{{ item.atrasos }}</a></td>
+                                                    {% endif %}
+                                                {% endifequal %}
+                                            {% endfor %}
+
+                                            <td>{{ item.asistencia }} %</td>
+                                            <td>{{ item.puntualidad }} %</td>
+                                            <div class="modal fade" id="inasistencias_{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="atrasos_{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        {% else %}{% if item.mes == 13 %}
+                                            <th>{{ item.get_mes_display }}</th>
+                                            {% for d in item.alumno.curso.diastrabajados_set.all %}
+                                                {% if d.mes == 13 %}
+                                                    <th>{{ d.diastrabajados }}</th>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <th>{{ item.inasistencias }}</th>
+                                            <th>{{ item.atrasos }}</th>
+                                            <th>{{ item.asistencia }} %</th>
+                                            <th>{{ item.puntualidad }} %</th>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+            <div class="tab-pane" id="SegundoSemestre">
+                    <div class="panel-body col-md-10">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Meses</th>
+                                <th>Días Trabajados</th>
+                                <th>Inasistencias</th>
+                                <th>Atrasos</th>
+                                <th>Asistencia</th>
+                                <th>Puntualidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% regroup asistencia by mes as asi %}
+                            {% for x in asi %}
+                                {% for item in x.list %}
+                                    {% if item.mes > 7 and item.mes < 13%}
+                                        <tr>
+                                            <th>{{ item.get_mes_display }}</th>
+                                            {% for dt in item.alumno.curso.diastrabajados_set.all %}
+                                                {% ifequal dt.mes item.mes %}
+                                                    <td>{{ dt.diastrabajados }}</td>
+                                                    {% if dt.diastrabajados == 0 and dt.mes == item.mes %}
+                                                        <td>{{ item.inasistencias }}</td>
+                                                        <td>{{ item.atrasos }}</td>
+                                                    {% else %}
+                                                        <td><a href="{% url 'inasistencia-update' item.id %}" data-toggle="modal" data-target="#inasistencias_{{ item.id }}">{{ item.inasistencias }}</a></td>
+                                                        <td><a href="{% url 'atraso-update' item.id %}" data-toggle="modal" data-target="#atrasos_{{ item.id }}">{{ item.atrasos }}</a></td>
+                                                    {% endif %}
+                                                {% endifequal %}
+                                            {% endfor %}
+                                            <td>{{ item.asistencia }} %</td>
+                                            <td>{{ item.puntualidad }} %</td>
+                                            <div class="modal fade" id="inasistencias_{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="atrasos_{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        {% else %}{% if item.mes == 14 %}
+                                            <th>{{ item.get_mes_display }}</th>
+                                            {% for d in item.alumno.curso.diastrabajados_set.all %}
+                                                {% if d.mes == 14 %}
+                                                    <th>{{ d.diastrabajados }}</th>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <th>{{ item.inasistencias }}</th>
+                                            <th>{{ item.atrasos }}</th>
+                                            <th>{{ item.asistencia }} %</th>
+                                            <th>{{ item.puntualidad }} %</th>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+            <div class="tab-pane" id="Anual">
+                <div class="panel-body col-md-10">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Periódo</th>
+                            <th>Días Trabajados</th>
+                            <th>Inasistencias</th>
+                            <th>Atrasos</th>
+                            <th>Asistencia</th>
+                            <th>Puntualidad</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% regroup asistencia by mes as asi %}
+                            {% for x in asi %}
+                                {% for item in x.list %}
+                                    {% if item.mes == 13 or item.mes == 14 %}
+                                        <tr>
+                                            <th>{{ item.get_mes_display }}</th>
+                                            {% for d in item.alumno.curso.diastrabajados_set.all %}
+                                                {% ifequal item.mes d.mes %}
+                                                    <td>{{ d.diastrabajados }}</td>
+                                                {% endifequal %}
+                                            {% endfor %}
+                                            <td>{{ item.inasistencias }}</td>
+                                            <td>{{ item.atrasos }}</td>
+                                            <td>{{ item.asistencia }} %</td>
+                                            <td>{{ item.puntualidad }} %</td>
+                                        </tr>
+                                    {% else %}
+                                        {% if item.mes == 15 %}
+                                            <tr>
+                                            <th>{{ item.get_mes_display }}</th>
+                                            {% for d in item.alumno.curso.diastrabajados_set.all %}
+                                                {% ifequal item.mes d.mes %}
+                                                    <th>{{ d.diastrabajados }}</th>
+                                                {% endifequal %}
+                                            {% endfor %}
+                                            <th>{{ item.inasistencias }}</th>
+                                            <th>{{ item.atrasos }}</th>
+                                            <th>{{ item.asistencia }} %</th>
+                                            <th>{{ item.puntualidad }} %</th>
+                                        </tr>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock%}

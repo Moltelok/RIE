@@ -83,7 +83,11 @@ celerybeat-schedule
 .env
 
 # virtualenv
+<<<<<<< HEAD
 .venv
+=======
+.env
+>>>>>>> diverged.master
 venv/
 ENV/
 
@@ -98,4 +102,8 @@ ENV/
 /site
 
 # mypy
+<<<<<<< HEAD
 .mypy_cache/
+=======
+.mypy_cache/
+>>>>>>> diverged.master

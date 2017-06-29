@@ -39,7 +39,9 @@ El archivo con el nombre que le diste con extension .pub, dentro esta la clave q
 para jalar el proyecto, debes configurar los servidores Remotos.
 
 $mkdir rie
+
 $cd rie/
+
 $git clone "ruta del repositorio"
 
 *Esta ruta se copia del repositorio.

@@ -70,3 +70,5 @@ $python manage.py migrate
 
 
 >>>Nota: con eso dudo que tengas Problemas
+
+jmmmmmmmmmmmmmm

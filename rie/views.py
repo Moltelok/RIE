@@ -18,14 +18,10 @@ def login_view(request):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            if user.is_active:
+            if user.datosusuario.activo:
                 login(request, user)
-                # Activar usuario bloqueado
-                uf = user.usuariofuncion
-                uf.bloqueado = False
-                uf.save()
                 return redirect(
-                    'ciclos:home'
+                    'registro:home'
                 )
             else:
                 messages.add_message(

@@ -109,3 +109,5 @@ ENV/
 >>>>>>> diverged.master
 
 .idea
+*.sqlite3
+.idea/*

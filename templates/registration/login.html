@@ -1,0 +1,64 @@
+{% extends 'registration/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <section class="bg-alt">
+        <div class="container">
+            <div class="row col-md-6 col-md-offset-3 card">
+                <div class="card-block">
+                    <img class="img-responsive center-block" src="{% static 'registro/media/rie.png' %}"
+                         style="height: 250px">
+
+                    {% if messages %}
+                        {% for m in messages %}
+                            <br>
+                            <div class="alert alert-{{ m.tags }}">
+                                <p>{{ m.message }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form class="lc-block toggled" id="l-login" role="form" method="post" active=".">
+                        <div class="lcb-form">
+                            {% csrf_token %}
+
+                            <!-- Usuario -->
+                            <div class="form-group row">
+                                <label class="sr-only control-label">Usuario</label>
+                                <div class="col-lg-12">
+                                    <input type="text" class="form-control"
+                                           name="username" placeholder="Usuario"
+                                            {% if request.POST.username %} value="{{ request.POST.username }}" {% endif %}>
+                                </div>
+                            </div>
+
+                            <!-- Contraseña -->
+                            <div class="form-group row">
+                                <label class="sr-only control-label">Contraseña</label>
+                                <div class="col-lg-12">
+                                    <input type="password" class="form-control"
+                                           name="password" placeholder="Contraseña">
+                                </div>
+                            </div>
+
+                            <!-- Recuérdame y Submit -->
+                            <div class="form-group row">
+                                <div class="col-sm-3 col-md-offset-3">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"> Recuérdame
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-success">
+                                        Ingresar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

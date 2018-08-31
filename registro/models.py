@@ -41,13 +41,14 @@ TIPO_PERFIL = (
 
 
 class Perfil(models.Model):
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     tipo = models.CharField(
         max_length=50,
         choices=TIPO_PERFIL
     )
     establecimiento = models.ForeignKey(
         Establecimiento,
+        on_delete=models.CASCADE,
         null=True,
         blank=True
     )
@@ -65,7 +66,7 @@ class Perfil(models.Model):
 
 
 class DatosUsuario(models.Model):
-    usuario = models.OneToOneField(User)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     telefono = models.CharField(max_length=200)
     activo = models.BooleanField(default=0)
 
@@ -100,7 +101,7 @@ class Alumno(models.Model):
 
 
 class Apoderado(models.Model):
-    alumno = models.OneToOneField(Alumno)
+    alumno = models.OneToOneField(Alumno, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200, verbose_name='Nombre completo')
     rut_a = models.CharField(max_length=200, verbose_name='Rut')
     telefono = models.CharField(max_length=20)
@@ -139,7 +140,7 @@ class TipoVivienda(models.Model):
 
 
 class AntecedentesAlumno(models.Model):
-    alumno = models.OneToOneField(Alumno)
+    alumno = models.OneToOneField(Alumno, on_delete=models.CASCADE)
     nombrep = models.CharField(max_length=200, verbose_name='Nombre Padre', blank=True, null=True)
     gradop = models.CharField(max_length=200, blank=True, null=True, verbose_name='Escolaridad Padre')
     ocupacionp = models.CharField(max_length=200, blank=True, null=True, verbose_name='Ocupación Padre')
@@ -150,7 +151,7 @@ class AntecedentesAlumno(models.Model):
     hermanos = models.IntegerField(verbose_name='N° hermanos', blank=True, null=True)
     lugar = models.CharField(max_length=200, blank=True, null=True)
     personas = models.IntegerField(verbose_name='N° de personas', blank=True, null=True)
-    Vivienda = models.ForeignKey(TipoVivienda, blank=True, null=True)
+    Vivienda = models.ForeignKey(TipoVivienda, on_delete=models.CASCADE, blank=True, null=True)
     habitaciones = models.IntegerField(verbose_name='N° de habitaciones', blank=True, null=True)
     renta = models.CharField(max_length=200, verbose_name='Renta mensual', blank=True, null=True)
     beneficiochs = models.BooleanField(default=False, verbose_name='Recibe beneficios de Chile Solidario')
@@ -177,9 +178,9 @@ class AntecedentesAlumno(models.Model):
 
 class Curso(models.Model):
     nombre = models.CharField(max_length=200)
-    profesor_jefe = models.ForeignKey(Perfil)
+    profesor_jefe = models.ForeignKey(Perfil, on_delete=models.CASCADE)
     anio = models.IntegerField(verbose_name='Año')
-    establecimiento = models.ForeignKey(Establecimiento)
+    establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return u"{0} {1}".format(
@@ -194,8 +195,8 @@ class Curso(models.Model):
 
 class Materia(models.Model):
     nombre = models.CharField(max_length=200)
-    curso = models.ForeignKey(Curso)
-    profesor = models.ForeignKey(Perfil)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    profesor = models.ForeignKey(Perfil, on_delete=models.CASCADE)
     orden = models.PositiveIntegerField(default=1)
 
     def __unicode__(self):
@@ -211,8 +212,8 @@ class Materia(models.Model):
 
 
 class AlumnoCurso(models.Model):
-    curso = models.ForeignKey(Curso)
-    alumno = models.ForeignKey(Alumno)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return u"{0} de {1}".format(
@@ -235,7 +236,7 @@ semestres = (
 
 class Evaluacion(models.Model):
     nombre = models.CharField(max_length=200)
-    materia = models.ForeignKey(Materia)
+    materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
     descripcion = models.TextField(max_length=500)
     semestre = models.CharField(max_length=50, choices=semestres)
     fecha = models.DateField()
@@ -261,8 +262,8 @@ valores = (
 
 
 class Nota(models.Model):
-    alumno = models.ForeignKey(AlumnoCurso)
-    evaluacion = models.ForeignKey(Evaluacion)
+    alumno = models.ForeignKey(AlumnoCurso, on_delete=models.CASCADE)
+    evaluacion = models.ForeignKey(Evaluacion, on_delete=models.CASCADE)
     nota = models.FloatField(max_length=5, blank=True, null=True)
     valor = models.IntegerField(choices=valores, null=True, blank=True, default=4)
 
@@ -298,7 +299,7 @@ meses = (
 
 
 class DiasTrabajados(models.Model):
-    curso = models.ForeignKey(Curso)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     mes = models.IntegerField(choices=meses, default=1)
     diastrabajados = models.IntegerField(default=0, verbose_name='Dias trabajados')
 
@@ -314,7 +315,7 @@ class DiasTrabajados(models.Model):
 
 
 class AsistenciaAlumno(models.Model):
-    alumno = models.ForeignKey(AlumnoCurso)
+    alumno = models.ForeignKey(AlumnoCurso, on_delete=models.CASCADE)
     mes = models.IntegerField(choices=meses, default=1)
     inasistencias = models.IntegerField(default=0)
     atrasos = models.IntegerField(default=0)
@@ -351,7 +352,7 @@ class AreaDesarrolloPersonal(models.Model):
 
 class ItemDesarrolloPersonal(models.Model):
     nombre = models.CharField(max_length=200)
-    area = models.ForeignKey(AreaDesarrolloPersonal)
+    area = models.ForeignKey(AreaDesarrolloPersonal, on_delete=models.CASCADE)
     descripcion = models.TextField(
         max_length=2500
     )
@@ -376,8 +377,8 @@ valores_desarrollo = (
 
 
 class InformeDesarrolloPersonal(models.Model):
-    alumno = models.ForeignKey(AlumnoCurso)
-    item = models.ForeignKey(ItemDesarrolloPersonal)
+    alumno = models.ForeignKey(AlumnoCurso, on_delete=models.CASCADE)
+    item = models.ForeignKey(ItemDesarrolloPersonal, on_delete=models.CASCADE)
     valor = models.IntegerField(choices=valores_desarrollo, default=2)
     semestre = models.IntegerField(choices=semestres, default=1)
     fecha = models.DateField(blank=True, null=True)
@@ -395,8 +396,8 @@ class InformeDesarrolloPersonal(models.Model):
 
 
 class AlumnoMateriaPromedio(models.Model):
-    alumno = models.ForeignKey(AlumnoCurso)
-    materia = models.ForeignKey(Materia)
+    alumno = models.ForeignKey(AlumnoCurso, on_delete=models.CASCADE)
+    materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
     promedio = models.FloatField(max_length=3, default=0, blank=True, null=True)
     semestre = models.IntegerField(choices=semestres, default=1)
     valor = models.IntegerField(choices=valores, null=True, blank=True, default=4)
@@ -414,7 +415,7 @@ class AlumnoMateriaPromedio(models.Model):
 
 
 class PromedioAlumno(models.Model):
-    alumno = models.ForeignKey(AlumnoCurso)
+    alumno = models.ForeignKey(AlumnoCurso, on_delete=models.CASCADE)
     mes = models.IntegerField(choices=semestres, default=1)
     promedio = models.FloatField(max_length=3, default=0)
     promedio_neto = models.FloatField(max_length=6)
@@ -432,7 +433,7 @@ class PromedioAlumno(models.Model):
 
 
 class ObservacionAlumno(models.Model):
-    alumno = models.ForeignKey(AlumnoCurso)
+    alumno = models.ForeignKey(AlumnoCurso, on_delete=models.CASCADE)
     semestre = models.IntegerField(choices=semestres, default=1)
     observacion = models.TextField(max_length=2000, null=True, blank=True)
 

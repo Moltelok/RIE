@@ -1,4 +1,4 @@
-Django==1.11.2
+Django==2.1
 freeze==1.0.10
 olefile==0.44
 Pillow==4.1.1

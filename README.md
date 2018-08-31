@@ -48,7 +48,7 @@ $git clone "ruta del repositorio"
 
 ##VirtualEnv
 
-Debes crear la maquina virtual en la carpeta del proyecto rie/
+Debes crear la maquina virtual en la carpeta del proyecto rie/, con python3.5 para poder utilizar Django 2.1
 
 $virtualenv .env
 

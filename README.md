@@ -1,6 +1,7 @@
 # RIE
 
-Template a Utilizar https://blackrockdigital.github.io/startbootstrap-sb-admin-2/pages/index.html
+Template a Utilizar https://coreui.io/demo/#main.html
+Repositorio Git https://github.com/coreui/coreui-free-bootstrap-admin-template-ajax
 
 Desde este sacaremos ideas para las nuevas vistas.
 
